@@ -1,0 +1,74 @@
+#' Produce random dates within a particular range of possibilities
+#'
+#' @param y Integer. Year. (Required)
+#' @param m Integer. Month.
+#' @param d Integer. Day.
+#' @param n Integer. Number of permuations to return.
+#'
+#' @export
+#'
+#' @return A vector of POSIXct values
+#'
+#' @examples
+#' sample_date(1930, NA, NA, 5)
+#'
+#' sample_date(1930, 2, NA, 5)
+sample_date <- function(y, m, d, n) {
+
+  is.count.NA <- function(x) {
+    if (length(x) != 1) {
+      return(FALSE)
+    } else {
+      is.na(x) | assertthat::is.count(x)
+    }
+  }
+
+  # Check that year is present, and all other arguments are single integers
+  stopifnot(!is.na(y))
+  stopifnot(assertthat::is.count(y))
+  stopifnot(is.count.NA(m))
+  stopifnot(is.count.NA(d))
+  stopifnot(is.count.NA(n))
+
+  # Date generation code adapted from Dirk Eddelbuettel:
+  # http://stackoverflow.com/a/14721124/3547541
+  gen_date <- function(i, sd, ed) {
+    dt <- difftime(ed, sd, units = "days")
+    ev <- runif(i, 0, dt)
+    sd + ev
+  }
+
+  if(is.na(m)) { # If there is no month...
+    if(is.na(d)) { # ... and there is no day...
+      # Set the early date to the year-01-01
+      early <- lubridate::ymd(paste(y, "01", "01", sep = "-"))
+      # And the late date to the last day of that same year
+      late <- early + lubridate::years(1) - lubridate::days(1)
+      gen_date(n, early, late)
+    } else { # ... and there is a day ...
+      early <- lubridate::ymd(paste(y, "01", d, sep = "-"))
+      late <- early + lubridate::years(1) - months(1)
+      gen_date(n, early, late)
+    }
+  } else {
+    if(is.na(d)) {
+      early <- lubridate::ymd(paste(y, m, "01", sep = "-"))
+      late <- early + months(1) - lubridate::days(1)
+      gen_date(n, early, late)
+    } else {
+      early <- lubridate::ymd(paste(y, m, d, sep = "-"))
+      rep(early, n)
+    }
+  }
+}
+
+#' Return a data frame with these added
+#'
+#' Requires dplyr
+#'
+#' @import dplyr
+#' @export
+sample_date_df <- function(y, m, d, n) {
+  rdates <- sample_date(y, m, d, n)
+  data.frame(y, m, d, rdates)
+}
