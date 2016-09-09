@@ -91,4 +91,3 @@ sample_date_df <- function(df, y, m, d, n, col_name = "sampled_date") {
   # Join the new dates onto the original dataframe
   bind_cols(exp_df, new_dates)
 }
-
