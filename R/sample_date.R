@@ -29,6 +29,8 @@ sample_date <- function(y, m, d, n) {
   stopifnot(is.count.NA(m))
   stopifnot(is.count.NA(d))
   stopifnot(is.count.NA(n))
+  stopifnot(is.na(d) | d > 31)
+  stopifnot(is.na(m) | m > 12)
 
   # Date generation code adapted from Dirk Eddelbuettel:
   # http://stackoverflow.com/a/14721124/3547541
