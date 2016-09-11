@@ -4,9 +4,24 @@
 \alias{row_rep}
 \title{Repeat rows}
 \usage{
-row_rep(df, n)
+row_rep(df, n, .id = "replicate")
+}
+\arguments{
+\item{df}{A data frame}
+
+\item{n}{Number of replicates to create}
+
+\item{.id}{Name of the oclumn in which to store the integer replicate ID}
+}
+\value{
+A data frame
 }
 \description{
-Repeat rows
+Replicate the rows of a data frame n times.
+}
+\examples{
+rep_iris <- row_rep(iris, 5)
+names(rep_iris)
+nrow(rep_iris)
 }
 
