@@ -37,8 +37,21 @@ Produce random dates within a particular range of possibilities
 }
 \examples{
 set.seed(100)
-sample_date(1930, NA, NA, 5, quiet = TRUE)
+# Generate random dates within the year 1930
+sample_date(1930, n = 5)
 
-sample_date(1930, 2, NA, 5, quiet = TRUE)
+# Dates in March 1930
+sample_date(1930, month_min = 3, month_max = 3, n = 5)
+
+# Dates between a given range
+sample_date(year_min = 1930, year_max = 1931, day_min = 25, day_max = 31, n = 5)
+
+# Use a predicate function to return only Mondays
+not_monday <- function(y, m, d) {
+ lubridate::wday(lubridate::ymd(paste(y, m, d, sep = "-"), quiet = TRUE)) != 2
+}
+
+sample_date(1930, n = 5, .p = not_monday)
+
 }
 
