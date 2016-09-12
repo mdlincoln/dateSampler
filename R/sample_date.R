@@ -43,7 +43,7 @@ sample_date <- function(year_min, year_max = year_min, month_min = 1, month_max 
   }
 
   # Parse all candidates into dates and return
-  lubridate::fast_strptime(paste(candidates$y, candidates$m, candidates$d, sep = "-"), format = "%Y-%m-%d")
+  lubridate::ymd(paste(candidates$y, candidates$m, candidates$d, sep = "-"), quiet = TRUE)
 }
 
 # Internal Functions ----
@@ -65,7 +65,7 @@ illegal_index <- function(y, m, d, .p) {
     # Reject any 29+ days in leap year Februaries
     (lubridate::leap_year(y) & m == 2 & d >= 29) |
     # Reject any remaining unparsable dates
-    is.na(lubridate::fast_strptime(paste(y, m, d, sep = "-"), format = "%Y-%m-%d")) |
+    is.na(lubridate::ymd(paste(y, m, d, sep = "-"), quiet = TRUE)) |
     .p(y, m, d)
 }
 
