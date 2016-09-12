@@ -26,4 +26,9 @@ The replicated data frame \code{df} with two new columns.
 \description{
 Requires dplyr
 }
+\note{
+If you want to pass one or more  \code{.p} along to
+  \code{\link{sample_date}}, you must wrap them in a \code{\link{list}}
+  first.
+}
 
