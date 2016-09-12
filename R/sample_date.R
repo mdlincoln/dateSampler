@@ -32,7 +32,9 @@ sample_date <- function(year_min, year_max = year_min, month_min = 1, month_max 
   ill <- illegal_index(candidates$y, candidates$m, candidates$d)
   while (any(ill)) {
     ill_n <- sum(ill)
-    if(!quiet)
+    if (ill_n == n)
+      stop("All dates are illegal. Try setting different date limits.")
+    if (!quiet)
       message("Regenerating ", ill_n, " illegal date", ifelse(ill_n > 1, "s...", "..."))
     candidates[ill,] <- sample_ymd(year_min, year_max, month_min, month_max, day_min, day_max, n = ill_n)
     ill <- illegal_index(candidates$y, candidates$m, candidates$d)
@@ -84,7 +86,9 @@ sample_ymd <- function(year_min, year_max, month_min, month_max, day_min, day_ma
 }
 
 check_args <- function(...) {
+
   dots <- list(...)
+
   # Confirm all arguments, if not NA, are single integers
   lapply(dots, function(x) {
     if (length(x) != 1) {
@@ -95,9 +99,4 @@ check_args <- function(...) {
       assertthat::is.count(x)
     }
   })
-
-  stopifnot(dots[["d"]] > 31)
-  stopifnot(dots[["m"]] > 12)
-  stopifnot(dots[["m"]] %in% months30 & dots[["d"]] <= 30)
-  stopifnot(dots[["m"]] == 2 & dots[["d"]] <= 29)
 }
