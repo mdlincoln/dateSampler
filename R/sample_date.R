@@ -54,12 +54,8 @@ month30 <- c(9, 4, 6, 11)
 # Returns true when the supplied combination is an illegal date
 illegal_index <- function(y, m, d, .p) {
 
-  # Reject out-of-bounds months
-  (m < 1 | m > 12) |
-    # Reject out-of-bounds days
-    (d < 1 | d > 31) |
-    # Reject any 31 days in 30 months
-    (m %in% month30 & d >= 31) |
+  # Reject any 31 days in 30 months
+  (m %in% month30 & d >= 31) |
     # Reject any 30+ days in Feburary
     (m == 2 & d >= 30) |
     # Reject any 29+ days in leap year Februaries
@@ -113,9 +109,10 @@ check_args <- function(year_min, year_max, month_min, month_max, day_min, day_ma
   stopifnot(year_min <= year_max)
   stopifnot(month_min <= month_max)
   stopifnot(day_min <= day_max)
-  if (any(illegal_index(year_min, month_min, day_min, .p = null_predicate)) &
-    any(illegal_index(year_max, month_max, day_max, .p = null_predicate)))
-    stop("The provided starting components are all illegal dates.")
+  # Reject out-of-bounds months
+  stopifnot(month_min >= 1 & month_min <= 12 & month_max >= 1 & month_max <= 12)
+  # Reject out-of-bounds days
+  stopifnot(day_min >= 1 & day_min <= 31 & day_max >= 1 & day_max <= 31)
 }
 
 # Always returns FALSE. Used when initially checking values so that the supplied
