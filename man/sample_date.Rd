@@ -4,19 +4,25 @@
 \alias{sample_date}
 \title{Produce random dates within a particular range of possibilities}
 \usage{
-sample_date(year_min = -9999, year_max = 9999, month_min = 1,
-  month_max = 12, day_min = 1, day_max = 31, n)
+sample_date(year_min, year_max = year_min, month_min = 1, month_max = 12,
+  day_min = 1, day_max = 31, n, quiet = FALSE)
 }
 \arguments{
 \item{year_min}{Integer. Minimum year (Required)}
 
 \item{year_max}{Integer. Maximum year}
 
-\item{n}{Integer. Number of permuations to return.}
+\item{month_min}{Integer. Minimum month}
 
-\item{m}{Integer. Month.}
+\item{month_max}{Integer. Maximum month}
 
-\item{d}{Integer. Day.}
+\item{day_min}{Integer. Minimum day}
+
+\item{day_max}{Integer. Maximum day}
+
+\item{n}{Integer. Number of permuations to return. (Required)}
+
+\item{quiet}{Boolean. Display messages when regenerating illegal dates?}
 }
 \value{
 A vector of POSIXct values
@@ -25,8 +31,9 @@ A vector of POSIXct values
 Produce random dates within a particular range of possibilities
 }
 \examples{
-sample_date(1930, NA, NA, 5)
+set.seed(100)
+sample_date(1930, NA, NA, 5, quiet = TRUE)
 
-sample_date(1930, 2, NA, 5)
+sample_date(1930, 2, NA, 5, quiet = TRUE)
 }
 
