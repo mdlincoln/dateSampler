@@ -1,9 +1,12 @@
 #' Produce random dates within a particular range of possibilities
 #'
-#' @param y Integer. Year. (Required)
+#' @param year_min Integer. Minimum year (Required)
+#' @param year_max Integer. Maximum year
 #' @param m Integer. Month.
 #' @param d Integer. Day.
 #' @param n Integer. Number of permuations to return.
+#'
+#' @import lubridate
 #'
 #' @export
 #'
@@ -13,15 +16,9 @@
 #' sample_date(1930, NA, NA, 5)
 #'
 #' sample_date(1930, 2, NA, 5)
-sample_date <- function(y, m, d, n) {
+sample_date <- function(year_min = -9999, year_max = 9999, month_min = 1, month_max = 12, day_min = 1, day_max = 31, n) {
 
-  is.count.NA <- function(x) {
-    if (length(x) != 1) {
-      return(FALSE)
-    } else {
-      is.na(x) | assertthat::is.count(x)
-    }
-  }
+  check_args(year_min, year_max, month_min, month_max, day_min, day_max, n)
 
   # Check that year is present, and all other arguments are single integers
   stopifnot(!is.na(y))
@@ -29,8 +26,7 @@ sample_date <- function(y, m, d, n) {
   stopifnot(is.count.NA(m))
   stopifnot(is.count.NA(d))
   stopifnot(is.count.NA(n))
-  stopifnot(is.na(d) | d > 31)
-  stopifnot(is.na(m) | m > 12)
+
 
   # Date generation code adapted from Dirk Eddelbuettel:
   # http://stackoverflow.com/a/14721124/3547541
@@ -92,4 +88,20 @@ sample_date_df <- function(df, y, m, d, n, col_name = "sampled_date") {
 
   # Join the new dates onto the original dataframe
   bind_cols(exp_df, new_dates)
+}
+
+check_args <- function(...) {
+  dots <- list(...)
+  lapply(dots, function(x) {
+    if (length(x) != 1) {
+      stop(FALSE)
+    } else if (is.na(x)) {
+      return(FALSE)
+    } else {
+      assertthat::is.count(x)
+    }
+  })
+
+  stopifnot(dots[["d"]] > 31)
+  stopifnot(dots[["m"]] > 12)
 }
