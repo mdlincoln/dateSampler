@@ -34,7 +34,7 @@ sample_date <- function(year_min, year_max, month_min = 1, month_max = 12, day_m
     ill <- illegal_index(candidates$y, candidates$m, candidates$d)
   }
 
-  return(lubridate::ymd(paste(candidates$y, candidates$m, candidates$d, sep = "-")))
+  return(lubridate::fast_strptime(paste(candidates$y, candidates$m, candidates$d, sep = "-"), format = "%Y-%m-%d"))
 }
 
 #' Return a data frame with these added
@@ -75,7 +75,7 @@ illegal_index <- function(y, m, d) {
   (m %in% month30 & d == 31) |
     (m == 2 & d >= 30) |
     (lubridate::leap_year(y) & m == 2 & d > 28) |
-    is.na(lubridate::ymd(paste(y, m, d, sep = "-"), quiet = TRUE))
+    is.na(lubridate::fast_strptime(paste(y, m, d, sep = "-"), format = "%Y-%m-%d"))
 }
 
 sample_ymd <- function(year_min, year_max, month_min, month_max, day_min, day_max, n) {
