@@ -14,9 +14,10 @@
 #' @return A vector of POSIXct values
 #'
 #' @examples
-#' sample_date(1930, NA, NA, 5)
+#' set.seed(100)
+#' sample_date(1930, NA, NA, 5, quiet = TRUE)
 #'
-#' sample_date(1930, 2, NA, 5)
+#' sample_date(1930, 2, NA, 5, quiet = TRUE)
 sample_date <- function(year_min, year_max, month_min = 1, month_max = 12, day_min = 1, day_max = 31, n, quiet = FALSE) {
 
   check_args(year_min, year_max, month_min, month_max, day_min, day_max, n)
