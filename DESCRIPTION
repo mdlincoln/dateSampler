@@ -10,7 +10,8 @@ License: MIT + file LICENSE
 Imports:
     assertthat,
     lubridate
-Suggests: dplyr,
+Suggests:
+    dplyr,
     testthat
 Encoding: UTF-8
 LazyData: true
