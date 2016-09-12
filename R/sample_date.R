@@ -83,14 +83,6 @@ sample_ymd <- function(year_min, year_max, month_min, month_max, day_min, day_ma
   return(data.frame(y, m, d))
 }
 
-# Date generation code adapted from Dirk Eddelbuettel:
-# http://stackoverflow.com/a/14721124/3547541
-gen_date <- function(i, sd, ed) {
-  dt <- difftime(ed, sd, units = "days")
-  ev <- runif(i, 0, dt)
-  sd + ev
-}
-
 check_args <- function(...) {
   dots <- list(...)
   # Confirm all arguments, if not NA, are single integers
