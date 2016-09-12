@@ -110,6 +110,7 @@ check_args <- function(year_min, year_max, month_min, month_max, day_min, day_ma
     }
   })
 
+  stopifnot(year_min <= year_max)
   stopifnot(month_min <= month_max)
   stopifnot(day_min <= day_max)
   if (any(illegal_index(year_min, month_min, day_min, .p = null_predicate)) &
