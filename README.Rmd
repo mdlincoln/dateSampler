@@ -5,6 +5,9 @@ output: github_document
 dateSampler
 ===========
 
+[![Travis-CI Build Status](https://travis-ci.org/mdlincoln/dateSampler.svg?branch=master)](https://travis-ci.org/mdlincoln/dateSampler)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/mdlincoln/dateSampler?branch=master&svg=true)](https://ci.appveyor.com/project/mdlincoln/dateSampler)
+
 Generate randomized dates within separately-specified ranges of years, months, and days.
 
 Data generated from archival sources often contains fragmentary dates, in which many records may be precise to the day, but some will be missing components such as the precise day, the month, or even the exact year.
