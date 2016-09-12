@@ -86,6 +86,7 @@ sample_ymd <- function(year_min, year_max, month_min, month_max, day_min, day_ma
 }
 
 check_args <- function(year_min, year_max, month_min, month_max, day_min, day_max, n) {
+  assertthat::is.count(n)
 
   dots <- list(year_min, year_max, month_min, month_max, day_min, day_max, n)
 
@@ -100,7 +101,6 @@ check_args <- function(year_min, year_max, month_min, month_max, day_min, day_ma
     }
   })
 
-  assertthat::is.count(n)
   stopifnot(month_min <= month_max)
   stopifnot(day_min <= day_max)
   stopifnot(month_min >= 1 & month_min <= 12 & month_max >= 1 & month_max <= 12)
