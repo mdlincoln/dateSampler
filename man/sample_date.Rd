@@ -5,7 +5,7 @@
 \title{Produce random dates within a particular range of possibilities}
 \usage{
 sample_date(year_min, year_max = year_min, month_min = 1, month_max = 12,
-  day_min = 1, day_max = 31, n, quiet = FALSE)
+  day_min = 1, day_max = 31, n, .p = null_predicate, quiet = FALSE)
 }
 \arguments{
 \item{year_min}{Integer. Minimum year (Required)}
@@ -21,6 +21,11 @@ sample_date(year_min, year_max = year_min, month_min = 1, month_max = 12,
 \item{day_max}{Integer. Maximum day}
 
 \item{n}{Integer. Number of permuations to return. (Required)}
+
+\item{.p}{An optional predicate function taking a year, month, and day as its
+parameters, and returning TRUE if the date is invalid. Allows one to
+construct complex date restrictions, such as only generating dates that are
+Mondays, etc.}
 
 \item{quiet}{Boolean. Display messages when regenerating illegal dates?}
 }
