@@ -74,31 +74,30 @@ month30 <- c(9, 4, 6, 11)
 illegal_index <- function(y, m, d) {
   (m %in% month30 & d == 31) |
     (m == 2 & d >= 30) |
-    (lubridate::leap_year(y) & m == 2 & d > 28)
+    (lubridate::leap_year(y) & m == 2 & d > 28) |
+    is.na(lubridate::ymd(paste(y, m, d, sep = "-"), quiet = TRUE))
 }
 
 sample_ymd <- function(year_min, year_max, month_min, month_max, day_min, day_max, n) {
-  srep <- function(c1, c2) {
+
+  # When year_min and year_max are the same, repeat the value instead of
+  # sampling from a range
+  srep <- function(c1, c2, n) {
     if (c1 == c2) {
       rep(c1, times = n)
     } else {
-      sample(c1:c2, size = n, replace = TRUE)
+      sample(seq(c1, c2, by = 1), size = n, replace = TRUE)
     }
   }
 
-
-
-  if(year_min == year_max)
-    rep(year_min, times = n)
-
   # Sample random years within range
-  y <- sample(year_min:year_max, size = n, replace = TRUE)
+  y <- srep(year_min, year_max, n)
 
   # Sample random months within range
-  m <- sample(month_min:month_max, size = n, replace = TRUE)
+  m <- srep(month_min, month_max, n)
 
   # Sample random days within range
-  d <- sample(day_min:day_max, size = n, replace = TRUE)
+  d <- srep(day_min, day_max, n)
 
   return(data.frame(y, m, d))
 }
