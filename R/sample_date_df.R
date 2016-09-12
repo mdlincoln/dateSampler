@@ -1,3 +1,5 @@
+utils::globalVariables(c(".p"))
+
 #' Return a data frame with these added
 #'
 #' Requires dplyr
@@ -19,6 +21,7 @@
 sample_date_df <- function(df, n, .name = "sampled_date", .id = "replicate", quiet = TRUE, ...) {
   assertthat::is.count(n)
 
+  # Ensure that .p is passed as a list and not simply as a closure
   if (exists(".p"))
     if (is.function(.p))
       stop(".p must be wrapped in a list() in order to be used with sample_date_df")
