@@ -22,13 +22,13 @@
 #' sample_date(1930, 2, NA, 5, quiet = TRUE)
 sample_date <- function(year_min, year_max = year_min, month_min = 1, month_max = 12, day_min = 1, day_max = 31, n, quiet = FALSE) {
 
+  # Confirm initial arguments are valid
   check_args(year_min, year_max, month_min, month_max, day_min, day_max, n)
 
-
-  # Produce candidates
+  # Produce an initial round of candidates
   candidates <- sample_ymd(year_min, year_max, month_min, month_max, day_min, day_max, n)
 
-  # Check for illegal dates and re-sample as needed
+  # Check for illegal dates in the candidates and re-sample as needed
   ill <- illegal_index(candidates$y, candidates$m, candidates$d)
   while (any(ill)) {
     ill_n <- sum(ill)
@@ -38,17 +38,24 @@ sample_date <- function(year_min, year_max = year_min, month_min = 1, month_max 
     ill <- illegal_index(candidates$y, candidates$m, candidates$d)
   }
 
-  return(lubridate::fast_strptime(paste(candidates$y, candidates$m, candidates$d, sep = "-"), format = "%Y-%m-%d"))
+  # Parse all candidates into dates and return
+  lubridate::fast_strptime(paste(candidates$y, candidates$m, candidates$d, sep = "-"), format = "%Y-%m-%d")
 }
 
 # Internal Functions ----
 
+# Which months have only 30 days
 month30 <- c(9, 4, 6, 11)
 
+# Check for illegal dates with increasing specificity
 illegal_index <- function(y, m, d) {
+  # Reject any 31 days in 30 months
   (m %in% month30 & d == 31) |
+    # Reject any 30+ days in Feburary
     (m == 2 & d >= 30) |
-    (lubridate::leap_year(y) & m == 2 & d > 28) |
+    # Reject any 29+ days in leap year Februaries
+    (lubridate::leap_year(y) & m == 2 & d >= 29) |
+    # Reject any remaining unparsable dates
     is.na(lubridate::fast_strptime(paste(y, m, d, sep = "-"), format = "%Y-%m-%d"))
 }
 
@@ -86,6 +93,7 @@ gen_date <- function(i, sd, ed) {
 
 check_args <- function(...) {
   dots <- list(...)
+  # Confirm all arguments, if not NA, are single integers
   lapply(dots, function(x) {
     if (length(x) != 1) {
       stop(FALSE)
@@ -98,4 +106,6 @@ check_args <- function(...) {
 
   stopifnot(dots[["d"]] > 31)
   stopifnot(dots[["m"]] > 12)
+  stopifnot(dots[["m"]] %in% months30 & dots[["d"]] <= 30)
+  stopifnot(dots[["m"]] == 2 & dots[["d"]] <= 29)
 }
