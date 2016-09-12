@@ -9,8 +9,6 @@
 #' @param n Integer. Number of permuations to return.
 #' @param quiet Boolean. Display messages when regenerating illegal dates?
 #'
-#' @import lubridate
-#'
 #' @export
 #'
 #' @return A vector of POSIXct values
