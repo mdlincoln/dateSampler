@@ -4,7 +4,7 @@ Title: Generate Randomized Dates
 Version: 0.1.0.9000
 Authors@R: person("Matthew", "Lincoln", email = "matthew.d.lincoln@gmail.com",
     role = c("aut", "cre"))
-Description: Generate randomized dates within separeately-specified ranges of
+Description: Generate randomized dates within separately-specified ranges of
     years, months, and days.
 License: MIT + file LICENSE
 Imports:
