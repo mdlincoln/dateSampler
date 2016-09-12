@@ -7,6 +7,7 @@
 #' @param m Integer. Month.
 #' @param d Integer. Day.
 #' @param n Integer. Number of permuations to return.
+#' @param quiet Boolean. Display messages when regenerating illegal dates?
 #'
 #' @import lubridate
 #'
@@ -18,7 +19,7 @@
 #' sample_date(1930, NA, NA, 5)
 #'
 #' sample_date(1930, 2, NA, 5)
-sample_date <- function(year_min, year_max, month_min = 1, month_max = 12, day_min = 1, day_max = 31, n) {
+sample_date <- function(year_min, year_max, month_min = 1, month_max = 12, day_min = 1, day_max = 31, n, quiet = FALSE) {
 
   check_args(year_min, year_max, month_min, month_max, day_min, day_max, n)
 
@@ -29,8 +30,10 @@ sample_date <- function(year_min, year_max, month_min = 1, month_max = 12, day_m
   # Check for illegal dates and re-sample as needed
   ill <- illegal_index(candidates$y, candidates$m, candidates$d)
   while (any(ill)) {
-    message("Regenerating ", sum(ill), " dates...")
-    candidates[ill,] <- sample_ymd(year_min, year_max, month_min, month_max, day_min, day_max, n = sum(ill))
+    ill_n <- sum(ill)
+    if(!quiet)
+      message("Regenerating ", ill_n, " illegal date", ifelse(ill_n > 1, "s...", "..."))
+    candidates[ill,] <- sample_ymd(year_min, year_max, month_min, month_max, day_min, day_max, n = ill_n)
     ill <- illegal_index(candidates$y, candidates$m, candidates$d)
   }
 
