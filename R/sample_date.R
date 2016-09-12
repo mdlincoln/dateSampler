@@ -85,9 +85,9 @@ sample_ymd <- function(year_min, year_max, month_min, month_max, day_min, day_ma
   return(data.frame(y, m, d))
 }
 
-check_args <- function(...) {
+check_args <- function(year_min, year_max, month_min, month_max, day_min, day_max, n) {
 
-  dots <- list(...)
+  dots <- list(year_min, year_max, month_min, month_max, day_min, day_max, n)
 
   # Confirm all arguments, if not NA, are single integers
   lapply(dots, function(x) {
@@ -99,4 +99,10 @@ check_args <- function(...) {
       assertthat::is.count(x)
     }
   })
+
+  assertthat::is.count(n)
+  stopifnot(month_min <= month_max)
+  stopifnot(day_min <= day_max)
+  stopifnot(month_min >= 1 & month_min <= 12 & month_max >= 1 & month_max <= 12)
+  stopifnot(day_min >= 1 & day_min <= 31 & day_max >= 1 & day_max <= 31)
 }
