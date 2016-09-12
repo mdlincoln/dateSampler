@@ -4,9 +4,11 @@
 #'
 #' @param year_min Integer. Minimum year (Required)
 #' @param year_max Integer. Maximum year
-#' @param m Integer. Month.
-#' @param d Integer. Day.
-#' @param n Integer. Number of permuations to return.
+#' @param month_min Integer. Minimum month
+#' @param month_max Integer. Maximum month
+#' @param day_min Integer. Minimum day
+#' @param day_max Integer. Maximum day
+#' @param n Integer. Number of permuations to return. (Required)
 #' @param quiet Boolean. Display messages when regenerating illegal dates?
 #'
 #' @export
@@ -18,7 +20,7 @@
 #' sample_date(1930, NA, NA, 5, quiet = TRUE)
 #'
 #' sample_date(1930, 2, NA, 5, quiet = TRUE)
-sample_date <- function(year_min, year_max, month_min = 1, month_max = 12, day_min = 1, day_max = 31, n, quiet = FALSE) {
+sample_date <- function(year_min, year_max = year_min, month_min = 1, month_max = 12, day_min = 1, day_max = 31, n, quiet = FALSE) {
 
   check_args(year_min, year_max, month_min, month_max, day_min, day_max, n)
 
