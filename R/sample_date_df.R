@@ -11,22 +11,17 @@
 #'
 #' @return The replicated data frame \code{df} with two new columns.
 #'
-#' @import dplyr
-#'
 #' @export
 sample_date_df <- function(df, n, .name = "sampled_date", .id = "replicate", quiet = TRUE, ...) {
   assertthat::is.count(n)
 
-  # Generate a dataframe with new dates
-  new_dates <- df %>%
-    rowwise() %>%
-    do(data.frame(d = sample_date(..., n = n, quiet = quiet)))
-  names(new_dates) <- .name
+  # Generate a column with new dates
+  new_dates <- structure(unlist(Map(sample_date, ..., n = n, quiet = quiet)), class = "Date")
 
   # Replicate the rows of df
-  exp_df <- df %>%
-    row_rep(n = n, .id = .id)
+  exp_df <- row_rep(df, n = n, .id = .id)
 
   # Join the new dates onto the original dataframe
-  bind_cols(exp_df, new_dates)
+  exp_df[[.name]] <- new_dates
+  return(exp_df)
 }

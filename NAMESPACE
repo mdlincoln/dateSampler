@@ -3,4 +3,3 @@
 export(row_rep)
 export(sample_date)
 export(sample_date_df)
-import(dplyr)
