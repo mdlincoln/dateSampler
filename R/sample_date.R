@@ -34,7 +34,7 @@ sample_date <- function(year_min, year_max, month_min = 1, month_max = 12, day_m
     ill <- illegal_index(candidates$y, candidates$m, candidates$d)
   }
 
-  return(as.Date(paste(candidates$y, candidates$m, candidates$d, sep = "-")))
+  return(lubridate::ymd(paste(candidates$y, candidates$m, candidates$d, sep = "-")))
 }
 
 #' Return a data frame with these added
