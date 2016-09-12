@@ -52,7 +52,7 @@ month30 <- c(9, 4, 6, 11)
 # Check for illegal dates with increasing specificity
 illegal_index <- function(y, m, d) {
   # Reject any 31 days in 30 months
-  (m %in% month30 & d == 31) |
+  (m %in% month30 & d >= 31) |
     # Reject any 30+ days in Feburary
     (m == 2 & d >= 30) |
     # Reject any 29+ days in leap year Februaries
