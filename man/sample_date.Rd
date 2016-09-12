@@ -4,16 +4,19 @@
 \alias{sample_date}
 \title{Produce random dates within a particular range of possibilities}
 \usage{
-sample_date(y, m, d, n)
+sample_date(year_min = -9999, year_max = 9999, month_min = 1,
+  month_max = 12, day_min = 1, day_max = 31, n)
 }
 \arguments{
-\item{y}{Integer. Year. (Required)}
+\item{year_min}{Integer. Minimum year (Required)}
+
+\item{year_max}{Integer. Maximum year}
+
+\item{n}{Integer. Number of permuations to return.}
 
 \item{m}{Integer. Month.}
 
 \item{d}{Integer. Day.}
-
-\item{n}{Integer. Number of permuations to return.}
 }
 \value{
 A vector of POSIXct values
