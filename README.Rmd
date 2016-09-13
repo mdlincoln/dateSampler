@@ -42,10 +42,16 @@ sample_date(year_min = 1875, year_max = 1875, day_min = 31, day_max = 31, n = 5)
 
 (Messages may be suppressed by passing `quiet = TRUE`)
 
-You may also set ranges for each of these components
+You may also set ranges for each of these components:
 
 ```{r}
 sample_date(year_min = 1875, year_max = 1892, month_min = 1, month_max = 5, n = 5)
+```
+
+If you pass a range that can only produce illegal dates, however, `sample_date` will throw an error:
+
+```{r, error=TRUE}
+sample_date(year_min = 1875, month_min = 2, month_max = 2, day_min = 30, n = 5)
 ```
 
 ### Expanding data frames

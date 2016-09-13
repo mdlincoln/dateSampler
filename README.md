@@ -46,7 +46,7 @@ sample_date(year_min = 1875, year_max = 1875, day_min = 31, day_max = 31, n = 5)
 
 (Messages may be suppressed by passing `quiet = TRUE`)
 
-You may also set ranges for each of these components
+You may also set ranges for each of these components:
 
 ``` r
 sample_date(year_min = 1875, year_max = 1892, month_min = 1, month_max = 5, n = 5)
