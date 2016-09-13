@@ -5,7 +5,8 @@
 \title{Produce random dates within a particular range of possibilities}
 \usage{
 sample_date(year_min, year_max = year_min, month_min = 1, month_max = 12,
-  day_min = 1, day_max = 31, n, .p = null_predicate, quiet = FALSE)
+  day_min = 1, day_max = 31, n, .p = null_predicate, quiet = FALSE,
+  allow_na = TRUE)
 }
 \arguments{
 \item{year_min}{Integer. Minimum year (Required)}

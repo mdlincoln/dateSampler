@@ -37,7 +37,7 @@
 #'
 #' sample_date(1930, n = 5, .p = not_monday)
 #'
-sample_date <- function(year_min, year_max = year_min, month_min = 1, month_max = 12, day_min = 1, day_max = 31, n, .p = null_predicate, quiet = FALSE) {
+sample_date <- function(year_min, year_max = year_min, month_min = 1, month_max = 12, day_min = 1, day_max = 31, n, .p = null_predicate, quiet = FALSE, allow_na = TRUE) {
 
   # Confirm initial arguments are valid
   check_args(year_min, year_max, month_min, month_max, day_min, day_max, n, .p)
@@ -49,8 +49,18 @@ sample_date <- function(year_min, year_max = year_min, month_min = 1, month_max 
   ill <- illegal_index(candidates$y, candidates$m, candidates$d, .p)
   while (any(ill)) {
     ill_n <- sum(ill)
+
+    if (ill_n == n) {
+      if (allow_na) {
+        return(structure(rep(NA_integer_, times = n), class = "Date"))
+      } else {
+        stop("Provided limits do not return valid dates.")
+      }
+    }
+
     if (!quiet)
       message("Regenerating ", ill_n, " illegal date", ifelse(ill_n > 1, "s...", "..."))
+
     candidates[ill,] <- sample_ymd(year_min, year_max, month_min, month_max, day_min, day_max, n = ill_n)
     ill <- illegal_index(candidates$y, candidates$m, candidates$d, .p)
   }
