@@ -54,9 +54,66 @@ sample_date(year_min = 1875, year_max = 1892, month_min = 1, month_max = 5, n = 
 
     ## [1] "1883-01-29" "1885-04-25" "1889-05-03" "1879-02-13" "1882-04-13"
 
+If you pass a range that can only produce illegal dates, however, `sample_date` will throw an error:
+
+``` r
+sample_date(year_min = 1875, month_min = 2, month_max = 2, day_min = 30, n = 5)
+```
+
+    ## Error in check_args(year_min, year_max, month_min, month_max, day_min, : The following ranges cannot return any valid dates:
+    ## Year: 1875-1875
+    ## Month: 2-2
+    ## Day: 30-31
+
 ### Expanding data frames
 
-TBD
+`sample_date_df` is a convenience function that generates replicates of a given data frame and appends new sampled dates. New dates are sampled rowwise, allowing you to specify different date component restrictions for each row. This can be useful when used as part of a modeling pipeline in which you need to use multiple imputation.
+
+``` r
+head(sample_date_df(iris, year_min = 1850:1999, n = 5), n = 10)
+```
+
+    ##     Sepal.Length Sepal.Width Petal.Length Petal.Width Species replicate
+    ## 1            5.1         3.5          1.4         0.2  setosa         1
+    ## 1.1          5.1         3.5          1.4         0.2  setosa         2
+    ## 1.2          5.1         3.5          1.4         0.2  setosa         3
+    ## 1.3          5.1         3.5          1.4         0.2  setosa         4
+    ## 1.4          5.1         3.5          1.4         0.2  setosa         5
+    ## 2            4.9         3.0          1.4         0.2  setosa         1
+    ## 2.1          4.9         3.0          1.4         0.2  setosa         2
+    ## 2.2          4.9         3.0          1.4         0.2  setosa         3
+    ## 2.3          4.9         3.0          1.4         0.2  setosa         4
+    ## 2.4          4.9         3.0          1.4         0.2  setosa         5
+    ##     sampled_date
+    ## 1     1850-08-17
+    ## 1.1   1850-06-29
+    ## 1.2   1850-04-07
+    ## 1.3   1850-03-26
+    ## 1.4   1850-02-01
+    ## 2     1851-12-13
+    ## 2.1   1851-06-08
+    ## 2.2   1851-06-03
+    ## 2.3   1851-10-29
+    ## 2.4   1851-04-24
+
+Custom predicates
+-----------------
+
+A custom predicate function can also be supplied to `sample_date` (and `sample_date_df`, if passed inside a `list()`) in order to intorduce more complex restrictions on the dates returned. The predicate function must take a year, month, and day value, and return TRUE if the supplied date is invalid, prompting `sample_date` to generate a new date.
+
+For example, if you wished to produce dates that were only Mondays, you could produce a predicate function like so:
+
+``` r
+not_monday <- function(y, m, d) {
+  lubridate::wday(lubridate::ymd(paste(y, m, d, sep = "-"), quiet = TRUE)) != 2
+}
+
+sample_date(1850, n = 5, .p = not_monday, quiet = TRUE)
+```
+
+    ## [1] "1850-12-09" "1850-09-16" "1850-06-17" "1850-11-11" "1850-04-22"
+
+Note that the more restrictive the predicate function, the more times `sample_date` may be forced to resample new dates.
 
 ------------------------------------------------------------------------
 

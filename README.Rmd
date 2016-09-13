@@ -56,7 +56,32 @@ sample_date(year_min = 1875, month_min = 2, month_max = 2, day_min = 30, n = 5)
 
 ### Expanding data frames
 
-TBD
+`sample_date_df` is a convenience function that generates replicates of a given data frame and appends new sampled dates.
+New dates are sampled rowwise, allowing you to specify different date component restrictions for each row.
+This can be useful when used as part of a modeling pipeline in which you need to use multiple imputation.
+
+```{r}
+head(sample_date_df(iris, year_min = 1850:1999, n = 5), n = 10)
+```
+
+**TBD**: non-standard evaluation of column names to make `sample_date_df` extra pipe-friendly
+
+## Custom predicates
+
+A custom predicate function can also be supplied to `sample_date` (and `sample_date_df`, if passed inside a `list()`) in order to intorduce more complex restrictions on the dates returned.
+The predicate function must take a year, month, and day value, and return TRUE if the supplied date is invalid, prompting `sample_date` to generate a new date.
+
+For example, if you wished to produce dates that were only Mondays, you could produce a predicate function like so:
+
+```{r}
+not_monday <- function(y, m, d) {
+  lubridate::wday(lubridate::ymd(paste(y, m, d, sep = "-"), quiet = TRUE)) != 2
+}
+
+sample_date(1850, n = 5, .p = not_monday, quiet = TRUE)
+```
+
+Note that the more restrictive the predicate function, the more times `sample_date` may be forced to resample new dates.
 
 ---
 [Matthew Lincoln](http://matthewlincoln.net) | Getty Research Institute
