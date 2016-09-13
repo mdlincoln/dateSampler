@@ -126,6 +126,8 @@ check_args <- function(year_min, year_max, month_min, month_max, day_min, day_ma
   stopifnot(month_min >= 1 & month_min <= 12 & month_max >= 1 & month_max <= 12)
   # Reject out-of-bounds days
   stopifnot(day_min >= 1 & day_min <= 31 & day_max >= 1 & day_max <= 31)
+  if (all(is.na(lubridate::ymd(paste(year_min:year_max, month_min:month_max, day_min:day_max, sep = "-"), quiet = TRUE))))
+    stop(paste0("The following ranges cannot return any valid dates:\n", "Year: ", year_min, "-", year_max, "\nMonth: ", month_min, "-", month_max, "\nDay: ", day_min, "-", day_max))
 }
 
 # Always returns FALSE. Used when initially checking values so that the supplied

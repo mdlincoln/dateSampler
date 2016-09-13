@@ -24,6 +24,7 @@ test_that("Bad inputs are rejected", {
   expect_error(sample_date_df(iris, year_min = 1830, year_max = 1812, n = 5))
   expect_error(sample_date_df(iris, year_min = 1812, month_min = 2, month_max = 1, n = 5))
   expect_error(sample_date_df(iris, year_min = 1812, day_min = 2, day_max = 1, n = 5))
+  expect_error(sample_date_df(iris, year_min = 1812, month_min = 2, month_max = 2, day_min = 30, n = 5))
   expect_error(sample_date_df(iris, year_min = 1812, .p = not_monday, n = 5))
 })
 
@@ -34,7 +35,16 @@ test_that("Sample date follows restrictions", {
   expect_true(all(day(sample_date_df(iris, year_min = 1812, day_min = 12, day_max = 18, n = 5)[["sampled_date"]]) %in% 12:18))
   expect_true(all(month(sample_date_df(iris, year_min = 1812, month_min = 2, month_max = 2, n = 5)[["sampled_date"]]) == 2))
   expect_true(all(month(sample_date_df(iris, year_min = 1812, month_min = 2, month_max = 10, n = 5)[["sampled_date"]]) %in% 2:10))
+  expect_true(all(month(sample_date_df(iris, year_min = 1812, month_min = 2, month_max = 4, day_min = 30, n = 5)[["sampled_date"]]) == 3))
+
   expect_true(all(wday(sample_date_df(iris, year_min = 1990, .p = list(not_monday), n = 5, quiet = TRUE)[["sampled_date"]]) == 2))
+})
+
+test_that("Column customization arguments work.", {
+  expect_equal(names(sample_date_df(iris, year_min = 1812, n = 5))[6], "replicate")
+  expect_equal(names(sample_date_df(iris, year_min = 1812, n = 5))[7], "sampled_date")
+  expect_equal(names(sample_date_df(iris, year_min = 1812, n = 5, .id = "sim_no"))[6], "sim_no")
+  expect_equal(names(sample_date_df(iris, year_min = 1812, n = 5, .name = "new_date"))[7], "new_date")
 })
 
 test_that("Messages are sent when regenerating bad dates", {
