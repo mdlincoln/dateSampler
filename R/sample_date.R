@@ -8,10 +8,10 @@
 #' @param month_max Integer. Maximum month
 #' @param day_min Integer. Minimum day
 #' @param day_max Integer. Maximum day
-#' @param .p An optional predicate function taking a year, month, and day as its
-#'   parameters, and returning TRUE if the date is valid. Allows one to
-#'   construct complex date restrictions, such as only generating dates that are
-#'   Mondays, etc.
+#' @param .p An optional \code{\link{predicate}} function taking a year, month,
+#'   and day as its parameters, and returning TRUE if the date is valid. Allows
+#'   one to construct complex date restrictions, such as only generating dates
+#'   that are Mondays, etc.
 #' @param n Integer. Number of permuations to return. (Required)
 #' @param quiet Boolean. Display messages when regenerating illegal dates?
 #'
@@ -125,7 +125,3 @@ check_args <- function(year_min, year_max, month_min, month_max, day_min, day_ma
   if (all(is.na(lubridate::ymd(paste(year_min:year_max, month_min:month_max, day_min:day_max, sep = "-"), quiet = TRUE))))
     stop(paste0("The following ranges cannot return any valid dates:\n", "Year: ", year_min, "-", year_max, "\nMonth: ", month_min, "-", month_max, "\nDay: ", day_min, "-", day_max))
 }
-
-# Always returns TRUE. Used when initially checking values so that the supplied
-# predicate never rejects a starting condition out-of-hand
-null_predicate <- function(a, b, c) return(TRUE)
