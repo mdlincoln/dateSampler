@@ -96,19 +96,21 @@ head(sample_date_df(iris, year_min = 1850:1999, n = 5), n = 10)
     ## 2.3   1851-10-29
     ## 2.4   1851-04-24
 
+**TBD**: non-standard evaluation of column names to make `sample_date_df` extra pipe-friendly
+
 Custom predicates
 -----------------
 
-A custom predicate function can also be supplied to `sample_date` (and `sample_date_df`, if passed inside a `list()`) in order to intorduce more complex restrictions on the dates returned. The predicate function must take a year, month, and day value, and return TRUE if the supplied date is invalid, prompting `sample_date` to generate a new date.
+A custom predicate function can also be supplied to `sample_date` (and `sample_date_df`, if passed inside a `list()`) in order to intorduce more complex restrictions on the dates returned. The predicate function must take a year, month, and day value, and return `FALSE` if the supplied date is invalid, prompting `sample_date` to generate a new date.
 
 For example, if you wished to produce dates that were only Mondays, you could produce a predicate function like so:
 
 ``` r
-not_monday <- function(y, m, d) {
-  lubridate::wday(lubridate::ymd(paste(y, m, d, sep = "-"), quiet = TRUE)) != 2
+is_monday <- function(y, m, d) {
+  lubridate::wday(lubridate::ymd(paste(y, m, d, sep = "-"), quiet = TRUE)) == 2
 }
 
-sample_date(1850, n = 5, .p = not_monday, quiet = TRUE)
+sample_date(1850, n = 5, .p = is_monday, quiet = TRUE)
 ```
 
     ## [1] "1850-12-09" "1850-09-16" "1850-06-17" "1850-11-11" "1850-04-22"

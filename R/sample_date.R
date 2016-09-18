@@ -9,7 +9,7 @@
 #' @param day_min Integer. Minimum day
 #' @param day_max Integer. Maximum day
 #' @param .p An optional predicate function taking a year, month, and day as its
-#'   parameters, and returning TRUE if the date is invalid. Allows one to
+#'   parameters, and returning TRUE if the date is valid. Allows one to
 #'   construct complex date restrictions, such as only generating dates that are
 #'   Mondays, etc.
 #' @param n Integer. Number of permuations to return. (Required)
@@ -31,11 +31,11 @@
 #' sample_date(year_min = 1930, year_max = 1931, day_min = 25, day_max = 31, n = 5)
 #'
 #' # Use a predicate function to return only Mondays
-#' not_monday <- function(y, m, d) {
-#'  lubridate::wday(lubridate::ymd(paste(y, m, d, sep = "-"), quiet = TRUE)) != 2
+#' is_monday <- function(y, m, d) {
+#'  lubridate::wday(lubridate::ymd(paste(y, m, d, sep = "-"), quiet = TRUE)) == 2
 #' }
 #'
-#' sample_date(1930, n = 5, .p = not_monday)
+#' sample_date(1930, n = 5, .p = is_monday)
 #'
 sample_date <- function(year_min, year_max = year_min, month_min = 1, month_max = 12, day_min = 1, day_max = 31, n, .p = null_predicate, quiet = FALSE) {
 
@@ -75,7 +75,7 @@ illegal_index <- function(y, m, d, .p) {
     (lubridate::leap_year(y) & m == 2 & d >= 29) |
     # Reject any remaining unparsable dates
     is.na(lubridate::ymd(paste(y, m, d, sep = "-"), quiet = TRUE)) |
-    .p(y, m, d)
+    !(.p(y, m, d))
 }
 
 sample_ymd <- function(year_min, year_max, month_min, month_max, day_min, day_max, n) {
@@ -130,6 +130,6 @@ check_args <- function(year_min, year_max, month_min, month_max, day_min, day_ma
     stop(paste0("The following ranges cannot return any valid dates:\n", "Year: ", year_min, "-", year_max, "\nMonth: ", month_min, "-", month_max, "\nDay: ", day_min, "-", day_max))
 }
 
-# Always returns FALSE. Used when initially checking values so that the supplied
+# Always returns TRUE. Used when initially checking values so that the supplied
 # predicate never rejects a starting condition out-of-hand
-null_predicate <- function(a, b, c) return(FALSE)
+null_predicate <- function(a, b, c) return(TRUE)

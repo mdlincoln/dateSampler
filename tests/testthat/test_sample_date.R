@@ -5,8 +5,8 @@ suppressPackageStartupMessages({
 })
 
 # Trial predicate
-not_monday <- function(y, m, d) {
-  wday(ymd(paste(y, m, d, sep = "-"), quiet = TRUE)) != 2
+is_monday <- function(y, m, d) {
+  wday(ymd(paste(y, m, d, sep = "-"), quiet = TRUE)) == 2
 }
 
 test_that("Bad inputs are rejected", {
@@ -35,7 +35,7 @@ test_that("Sample date follows restrictions", {
   expect_true(all(month(sample_date(1812, month_min = 2, month_max = 2, n = 5)) == 2))
   expect_true(all(month(sample_date(1812, month_min = 2, month_max = 10, n = 5)) %in% 2:10))
   expect_true(all(month(sample_date(1812, month_min = 2, month_max = 4, day_min = 30, n = 5)) == 3))
-  expect_true(all(wday(sample_date(1990, n = 5, .p = not_monday, quiet = TRUE)) == 2))
+  expect_true(all(wday(sample_date(1990, n = 5, .p = is_monday, quiet = TRUE)) == 2))
 })
 
 test_that("Messages are sent when regenerating bad dates", {

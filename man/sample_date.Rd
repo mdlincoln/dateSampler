@@ -23,7 +23,7 @@ sample_date(year_min, year_max = year_min, month_min = 1, month_max = 12,
 \item{n}{Integer. Number of permuations to return. (Required)}
 
 \item{.p}{An optional predicate function taking a year, month, and day as its
-parameters, and returning TRUE if the date is invalid. Allows one to
+parameters, and returning TRUE if the date is valid. Allows one to
 construct complex date restrictions, such as only generating dates that are
 Mondays, etc.}
 
@@ -47,11 +47,11 @@ sample_date(1930, month_min = 3, month_max = 3, n = 5)
 sample_date(year_min = 1930, year_max = 1931, day_min = 25, day_max = 31, n = 5)
 
 # Use a predicate function to return only Mondays
-not_monday <- function(y, m, d) {
- lubridate::wday(lubridate::ymd(paste(y, m, d, sep = "-"), quiet = TRUE)) != 2
+is_monday <- function(y, m, d) {
+ lubridate::wday(lubridate::ymd(paste(y, m, d, sep = "-"), quiet = TRUE)) == 2
 }
 
-sample_date(1930, n = 5, .p = not_monday)
+sample_date(1930, n = 5, .p = is_monday)
 
 }
 
