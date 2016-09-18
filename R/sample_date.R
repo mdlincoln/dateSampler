@@ -31,10 +31,6 @@
 #' sample_date(year_min = 1930, year_max = 1931, day_min = 25, day_max = 31, n = 5)
 #'
 #' # Use a predicate function to return only Mondays
-#' is_monday <- function(y, m, d) {
-#'  lubridate::wday(lubridate::ymd(paste(y, m, d, sep = "-"), quiet = TRUE)) == 2
-#' }
-#'
 #' sample_date(1930, n = 5, .p = is_monday)
 #'
 sample_date <- function(year_min, year_max = year_min, month_min = 1, month_max = 12, day_min = 1, day_max = 31, n, .p = null_predicate, quiet = FALSE) {
