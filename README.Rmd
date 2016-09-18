@@ -16,6 +16,8 @@ Data generated from archival sources often contains fragmentary dates, in which 
 Unlike assinging categorical or numeric values, however, generating random dates under certain restrictions can be difficult.
 dateSampler generates randomized dates that abide to restrictions on the year, month, and day components of a given date.
 
+[mi]: http://www.stefvanbuuren.nl/mi/mi.html
+
 ## Installation
 
 ```{r, eval = FALSE}

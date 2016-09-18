@@ -8,7 +8,7 @@ Generate randomized dates within separately-specified ranges of years, months, a
 
 Data generated from archival sources often contains fragmentary dates, in which many records may be precise to the day, but some will be missing components such as the precise day, the month, or even the exact year.
 
-\[Multiple imputation\]\[mi\] can be used to simulate the effect of these missing values when producing models based on such fragmentary data. Unlike assinging categorical or numeric values, however, generating random dates under certain restrictions can be difficult. dateSampler generates randomized dates that abide to restrictions on the year, month, and day components of a given date.
+[Multiple imputation](http://www.stefvanbuuren.nl/mi/mi.html) can be used to simulate the effect of these missing values when producing models based on such fragmentary data. Unlike assinging categorical or numeric values, however, generating random dates under certain restrictions can be difficult. dateSampler generates randomized dates that abide to restrictions on the year, month, and day components of a given date.
 
 Installation
 ------------
