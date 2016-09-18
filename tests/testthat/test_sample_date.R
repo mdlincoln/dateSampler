@@ -4,11 +4,6 @@ suppressPackageStartupMessages({
   library(lubridate)
 })
 
-# Trial predicate
-is_monday <- function(y, m, d) {
-  wday(ymd(paste(y, m, d, sep = "-"), quiet = TRUE)) == 2
-}
-
 test_that("Bad inputs are rejected", {
   expect_error(sample_date(year_min = NA, n = 5))
   expect_error(sample_date(year_min = 1812, n = NULL))
