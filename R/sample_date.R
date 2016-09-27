@@ -35,6 +35,17 @@
 #'
 sample_date <- function(year_min, year_max = year_min, month_min = 1, month_max = 12, day_min = 1, day_max = 31, n, .p = null_predicate, quiet = FALSE) {
 
+  if (is.na(year_max))
+    year_max <- year_min
+  if (is.na(month_min))
+    month_min <- 1
+  if (is.na(month_max))
+    month_max <- 12
+  if (is.na(day_min))
+    day_min <- 1
+  if (is.na(day_max))
+    day_max <- 31
+
   # Confirm initial arguments are valid
   check_args(year_min, year_max, month_min, month_max, day_min, day_max, n, .p)
 
